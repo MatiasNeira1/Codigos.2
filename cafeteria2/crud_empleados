@@ -1,0 +1,101 @@
+import json
+import os
+import globales
+
+
+def crear_empleado():
+    empleados = globales.leer_archivo_json("empleados.json")
+    print("\t\t===CREAR USUARIO===")
+    print("=" * 55)
+    id_empleado = input("Ingrese nueva ID de empleado que desea agregar: ")
+    nombre_empleado = input("Ingrese nombre de empleado que desea agregar: ")
+    apellido_empleado = input("Ingrese apellido de empleado que desea agregar: ")
+    try:
+        sueldo = int(input("Ingrese sueldo de empleado: "))
+    except:
+        sueldo = 0
+    id_cargo = input("Ingrese ID del cargo de empleado que desea agregar: ")
+
+    nuevo_empleado = {
+        "id_empleado": id_empleado,
+        "nombre": nombre_empleado,
+        "apellido": apellido_empleado,
+        "sueldo": sueldo,
+        "id_cargo": id_cargo,
+    }
+
+    empleados.append(nuevo_empleado)
+    globales.guardar_archivo_json("empleados.json", empleados)
+
+
+def actualizar_empleado():
+
+    empleados = globales.leer_archivo_json("empleados.json")
+    print("\t\t===ACTUALIZAR DATOS===")
+    print("=" * 55)
+    id_empleado = input("Ingrese ID de empleado que desea actualizar: ")
+    nombre_empleado = input("Ingrese nombre de empleado que desea actualizar: ")
+    apellido_empleado = input("Ingrese apellido de empleado que desea actualizar: ")
+    try:
+        sueldo = int(input("Ingrese sueldo de empleado : "))
+    except:
+        sueldo = 0
+    id_cargo = input("Ingrese ID del cargo de empleado que desea agregar: ")
+
+    for i in empleados:
+        if i["id_empleado"] == id_empleado:
+            i["nombre"] = nombre_empleado
+            i["apellido"] = apellido_empleado
+            i["sueldo"] = sueldo
+            i["id_cargo"] = id_cargo
+            break
+    globales.guardar_archivo_json("empleados.json", empleados)
+
+
+def listar_empleados():
+    empleados = globales.leer_archivo_json("empleados.json")
+    print(empleados)
+
+
+def borrar_empleado():
+
+    empleados = globales.leer_archivo_json("empleados.json")
+    print("\t\t===ELIMINAR DATOS===")
+    print("=" * 55)
+    id_empleado = input("Ingrese ID de empleado que desea eliminar: ")
+
+    empleados_que_quedan = []
+
+    for i in empleados:
+        if i["id_empleado"] != id_empleado:
+
+            empleados_que_quedan.append(i)
+    globales.guardar_archivo_json("empleados.json", empleados_que_quedan)
+
+
+def menu_general():
+    os.system("cls")
+    print("== EMPLEADOS ==")
+    print("1. Crear         - Create")
+    print("2. Actualizar    - Update")
+    print("3. Listar        - Read")
+    print("4. Borrar        - Delete")
+    print("5. Salir")
+
+    opcion = globales.seleccionar_opcion(5)
+
+    if opcion == 1:
+        crear_empleado()
+
+    elif opcion == 2:
+        actualizar_empleado()
+    elif opcion == 3:
+        listar_empleados()
+    elif opcion == 4:
+        borrar_empleado()
+
+    elif opcion == 5:
+        print("salir")
+
+
+menu_general()
